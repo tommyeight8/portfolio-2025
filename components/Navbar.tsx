@@ -3,7 +3,17 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSearch, IoClose } from "react-icons/io5";
+import { usePathname } from "next/navigation";
+
 import MagneticLink from "./MagneticLinks";
+
+const navItems = [
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Works", path: "/works" },
+  { label: "Contact", path: "/contact" },
+  { label: "Resume", path: "/resume" },
+];
 
 const mockResults = [
   { id: 1, title: "Portfolio Website", image: "/thumbs/portfolio.jpg" },
@@ -14,6 +24,7 @@ const mockResults = [
 const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const pathname = usePathname();
 
   const filteredResults =
     query.length > 0
@@ -35,14 +46,29 @@ const Navbar = () => {
           </div>
           {/* <MagneticLink /> */}
           <ul className="flex gap-12 justify-center">
-            {["Home", "About", "Works", "Contact", "Resume"].map((item) => (
-              <li key={item} className="relative group text-xs cursor-pointer">
-                <span className="text-zinc-300 group-hover:text-zinc-200 transition">
-                  {item}
-                </span>
-                <span className="absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-200 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
-              </li>
-            ))}
+            {navItems.map(({ label, path }) => {
+              const isActive = pathname === path;
+              return (
+                <li
+                  key={label}
+                  className="relative group text-xs cursor-pointer"
+                >
+                  <a
+                    href={path}
+                    className="text-zinc-300 group-hover:text-zinc-200 transition"
+                  >
+                    {label}
+                  </a>
+                  <span
+                    className={`absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-200 transition-transform origin-left duration-300 ${
+                      isActive
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </li>
+              );
+            })}
           </ul>
           <button
             onClick={() => setSearchOpen((prev) => !prev)}

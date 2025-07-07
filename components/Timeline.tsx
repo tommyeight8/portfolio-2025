@@ -1,54 +1,13 @@
 import React from "react";
-import { FaPhone, FaLocationPin, FaEnvelope } from "react-icons/fa6";
 import { Timeline } from "@/components/ui/timeline";
 
-// const page = () => {
-//   return (
-//     <div className="w-full h-screen p-12 bg-gray-100 flex justify-center">
-//       <div className="bg-white rounded-2xl w-full max-w-[900px] min-h-96 shadow-xl overflow-hidden">
-//         <div className="border-r border-gray-200 max-w-1/3 h-full flex flex-col p-4 pt-12">
-//           <h3 className="font-bold text-zinc-700 text-3xl mb-2">Tommy Vong</h3>
-//           <h3 className="font-light text-zinc-400 text-xs tracking-widest	">
-//             Graphic Designer/Web Developer
-//           </h3>
-//           <span className="w-full block bg-gray-200 h-[1px] mt-6 mb-6"></span>
-//           <div className="flex flex-col gap-2 text-zinc-500">
-//             <h4 className="font-bold text-md text-zinc-700">Info</h4>
-//             <span className="flex gap-1 items-center text-xs">
-//               <FaPhone />
-//               626.340.0000
-//             </span>
-//             <span className="flex gap-1 items-center text-xs">
-//               <FaEnvelope />
-//               Tommy@test.com
-//             </span>
-//             <span className="flex gap-1 items-center text-xs">
-//               <FaPhone />
-//               Greater Los Angeles
-//             </span>
-//           </div>
-//           <span className="w-full block bg-gray-200 h-[1px] mt-6 mb-6"></span>
-//           <div className="flex flex-col gap-2 text-zinc-500">
-//             <h4 className="font-bold text-md text-zinc-700">Education</h4>
-//             <p className="font-semibold text-xs">Cal Poly Pomona</p>
-//             <p className="text-xs">Bachelor of Fine Arts - 2013</p>
-//             <p className="capitalize leading-1 text-xs">
-//               With focus on graphic design
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-export function page() {
+export function TimelineDemo() {
   const data = [
     {
       title: "2024",
       content: (
         <div>
-          <p className="mb-8 text-xs font-normal text-neutral-200 md:text-sm dark:text-neutral-200">
+          <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
             Built and launched Aceternity UI and Aceternity UI Pro from scratch
           </p>
           <div className="grid grid-cols-2 gap-4">
@@ -88,11 +47,11 @@ export function page() {
       title: "Early 2023",
       content: (
         <div>
-          <p className="mb-8 text-xs font-normal text-neutral-200 md:text-sm dark:text-neutral-200">
+          <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
             I usually run out of copy, but when I see content this big, I try to
             integrate lorem ipsum.
           </p>
-          <p className="mb-8 text-xs font-normal text-neutral-200 md:text-sm dark:text-neutral-200">
+          <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
             Lorem ipsum is for people who are too lazy to write copy. But we are
             not. Here are some more example of beautiful designs I built.
           </p>
@@ -133,7 +92,7 @@ export function page() {
       title: "Changelog",
       content: (
         <div>
-          <p className="mb-4 text-xs font-normal text-neutral-200 md:text-sm dark:text-neutral-200">
+          <p className="mb-4 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
             Deployed 5 new components on Aceternity today
           </p>
           <div className="mb-8">
@@ -188,12 +147,8 @@ export function page() {
     },
   ];
   return (
-    <div className="relative w-full min-h-screen overflow-clip bg-[#101010] flex justify-center items-center p-12">
-      <div className="p-8 rounded-2xl w-full max-w-[1100px] ">
-        <Timeline data={data} />
-      </div>
+    <div className="relative w-full overflow-clip">
+      <Timeline data={data} />
     </div>
   );
 }
-
-export default page;

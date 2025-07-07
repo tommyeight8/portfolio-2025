@@ -28,7 +28,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-zinc-900 p-8 text-white flex flex-col items-center justify-center">
+    <footer
+      id="contact"
+      className="w-full bg-[#101010] p-8 text-white flex flex-col items-center justify-center"
+    >
       <div className="w-full max-w-[1100px] flex gap-12 border-t-1 border-zinc-800 pt-12">
         <div className="w-1/2">
           <h3 className="text-xl font-semibold mb-4">Contact Me</h3>
@@ -74,7 +77,7 @@ export default function Footer() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 transition text-white px-4 py-2 rounded disabled:opacity-50"
+              className="cursor-pointer bg-violet-600 hover:bg-violet-700 transition text-white px-4 py-2 rounded disabled:opacity-50"
             >
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
@@ -98,7 +101,7 @@ export default function Footer() {
       </div>
 
       <div className="text-center text-zinc-700 text-xs border-t-1 border-zinc-800 w-full max-w-[1100px] mt-8 pt-4">
-        &copy; {new Date().getFullYear()} Your Name. All rights reserved.
+        &copy; {new Date().getFullYear()} Tommy Vong.
       </div>
     </footer>
   );

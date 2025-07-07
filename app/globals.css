@@ -59,3 +59,8 @@ body {
 .swiper-button-next::after {
   display: none !important; /* remove default arrow icons */
 }
+
+.font-raleway-thin {
+  font-family: var(--font-raleway), sans-serif;
+  font-weight: 400;
+}

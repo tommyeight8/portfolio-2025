@@ -4,7 +4,7 @@ import TypewriterComponent from "./Typewriter";
 
 const Hero = () => {
   return (
-    <div className="h-2/3 w-full bg-zinc-900 flex justify-center items-center">
+    <div className="h-2/3 w-full bg-[#101010] flex justify-center items-center">
       <div className="flex items-center w-full max-w-[900px]">
         <div className="text-gray-100 w-2/3">
           {/* <h3 className="text-xl font-semibold">

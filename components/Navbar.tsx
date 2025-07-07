@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSearch, IoClose } from "react-icons/io5";
 import { usePathname } from "next/navigation";
+import { IconBadgeTm } from "@tabler/icons-react";
 
 import MagneticLink from "./MagneticLinks";
 
@@ -11,7 +12,7 @@ const navItems = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Works", path: "/works" },
-  { label: "Contact", path: "/contact" },
+  { label: "Contact", path: "#contact" },
   { label: "Resume", path: "/resume" },
 ];
 
@@ -37,17 +38,29 @@ const Navbar = () => {
     <motion.header
       animate={{ height: searchOpen ? 240 : 45 }} // use actual height
       transition={{ type: "spring", damping: 20, stiffness: 120 }}
-      className="w-full sticky top-0 bg-zinc-800 z-50 overflow-hidden shadow"
+      className="w-full sticky top-0 bg-[#1A1A1D] z-50 shadow border-b border-zinc-800"
     >
       <div className="w-full max-w-[1100px] mx-auto flex flex-col px-4">
         <div className="flex justify-between items-center h-[45px]">
-          <div className="bg-zinc-700 h-5 w-5 text-sm font-bold text-white flex justify-center items-center rounded-md">
-            T
+          <div className="flex w-21 justify-start">
+            <IconBadgeTm size={30} className="text-gray-200" />
+            {/* <div className="bg-zinc-700 h-5 w-5 text-sm font-bold text-white flex justify-center items-center rounded-md">
+              T
+            </div> */}
           </div>
           {/* <MagneticLink /> */}
           <ul className="flex gap-12 justify-center">
             {navItems.map(({ label, path }) => {
               const isActive = pathname === path;
+
+              const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                if (label === "Contact" && path.startsWith("#")) {
+                  e.preventDefault();
+                  const section = document.querySelector(path);
+                  if (section) section.scrollIntoView({ behavior: "smooth" });
+                }
+              };
+
               return (
                 <li
                   key={label}
@@ -55,6 +68,7 @@ const Navbar = () => {
                 >
                   <a
                     href={path}
+                    onClick={handleClick}
                     className="text-zinc-300 group-hover:text-zinc-200 transition"
                   >
                     {label}
@@ -72,7 +86,7 @@ const Navbar = () => {
           </ul>
           <button
             onClick={() => setSearchOpen((prev) => !prev)}
-            className="text-sm text-zinc-300 hover:text-zinc-200 transition cursor-pointer"
+            className="w-21 flex justify-end text-sm text-zinc-300 hover:text-zinc-200 transition cursor-pointer"
           >
             {searchOpen ? (
               <IoClose />

@@ -22,7 +22,7 @@ export default function NotFound() {
       </p> */}
       <Link
         href="/"
-        className="hover:-translate-y-1 transition duration-200 text-sm md:text-xl text-zinc-700 flex items-center gap-2 mt-2 md:mt-12 px-4 py-2 md:px-8 md:py-4 bg-gray-200 rounded-4xl"
+        className="hover:-translate-y-1 transition duration-200 text-sm md:text-xl text-zinc-700 flex items-center gap-2 mt-2 md:mt-12 px-4 py-2 md:px-6 md:py-3 bg-gray-200 rounded-4xl"
       >
         <IconArrowLeft size={18} /> Take me home
       </Link>

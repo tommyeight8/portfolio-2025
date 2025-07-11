@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -90,7 +91,7 @@ export default function Footer() {
           </form>
         </div>
 
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-1/2 flex flex-col justify-between">
           <ul className="flex justify-around gap-2 md:gap-8 text-gray-400">
             <li className="hover:text-white transition cursor-pointer text-xs md:text-sm">
               Home
@@ -108,6 +109,13 @@ export default function Footer() {
               Resume
             </li>
           </ul>
+          <Image
+            src="/images/tommyvong-logo.png"
+            alt="tommy vong logo"
+            width={80}
+            height={80}
+            className="mt-4 md:mt-0 self-center md:self-end"
+          />
         </div>
       </div>
 

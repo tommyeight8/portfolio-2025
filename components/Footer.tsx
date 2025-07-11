@@ -91,7 +91,7 @@ export default function Footer() {
           </form>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col justify-between">
+        <div className="mt-6 w-full md:w-1/2 flex flex-col justify-between">
           <ul className="flex justify-around gap-2 md:gap-8 text-gray-400">
             <li className="hover:text-white transition cursor-pointer text-xs md:text-sm">
               Home
@@ -114,7 +114,8 @@ export default function Footer() {
             alt="tommy vong logo"
             width={80}
             height={80}
-            className="mt-4 md:mt-0 self-center md:self-end"
+            className="mt-12 md:mt-0 self-center md:self-end w-[60px] h-[60px] md:w-[80px] md:h-[80px] object-contain"
+            priority
           />
         </div>
       </div>

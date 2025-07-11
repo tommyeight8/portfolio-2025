@@ -1,4 +1,3 @@
-// app/layout.tsx
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -19,6 +18,8 @@ import ConditionalFooter from "@/components/ConditionalFooter";
 import { InitProjects } from "@/components/InitProjects";
 import { PostHogProvider } from "@/providers/PostHogProvider";
 
+import { Suspense } from "react"; // 👈 ADD THIS
+
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -38,32 +39,36 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <PostHogProvider>
-        <html lang="en" suppressHydrationWarning>
-          <head />
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} font-raleway antialiased`}
-          >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
+      <Suspense fallback={null}>
+        {" "}
+        {/* 👈 WRAP PostHogProvider */}
+        <PostHogProvider>
+          <html lang="en" suppressHydrationWarning>
+            <head />
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} font-raleway antialiased`}
             >
-              <div className="flex flex-col min-h-screen text-foreground transition-colors">
-                <Navbar />
-                <main className="flex-grow">
-                  <ProjectProvider>
-                    <InitProjects />
-                    {children}
-                  </ProjectProvider>
-                </main>
-                <ConditionalFooter />
-              </div>
-            </ThemeProvider>
-          </body>
-        </html>
-      </PostHogProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <div className="flex flex-col min-h-screen text-foreground transition-colors">
+                  <Navbar />
+                  <main className="flex-grow">
+                    <ProjectProvider>
+                      <InitProjects />
+                      {children}
+                    </ProjectProvider>
+                  </main>
+                  <ConditionalFooter />
+                </div>
+              </ThemeProvider>
+            </body>
+          </html>
+        </PostHogProvider>
+      </Suspense>
     </ClerkProvider>
   );
 }

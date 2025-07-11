@@ -10,6 +10,7 @@ import Link from "next/link";
 
 import { SignedIn, SignedOut, SignOutButton, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -54,11 +55,17 @@ const Navbar = () => {
       >
         <div className="w-full max-w-[1100px] mx-auto flex flex-col px-4">
           <div className="flex justify-between items-center h-[45px]">
-            <div className="flex w-8 justify-start">
-              <IconBadgeTm
+            <div className="relative flex w-8 h-8 justify-start">
+              <Image
+                src="/images/tommyvong-logo.png"
+                alt="tommy-logo"
+                fill
+                className="object-contain"
+              />
+              {/* <IconBadgeTm
                 size={30}
                 className="text-zinc-800 dark:text-gray-200"
-              />
+              /> */}
             </div>
 
             {/* Desktop Nav */}

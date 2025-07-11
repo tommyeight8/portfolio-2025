@@ -17,7 +17,7 @@ export default function NotFound() {
         />
       </div>
 
-      {/* <p className="text-gray-500 text-lg mt-8">
+      {/* <p className="text-gray-500 text-lg mt-18">
         This page could not be found.
       </p> */}
       <Link

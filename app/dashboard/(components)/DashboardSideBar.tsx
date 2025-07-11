@@ -35,7 +35,7 @@ const DashboardSideBar = ({
           "fixed top-0 left-0 z-40 h-full flex items-start transition-transform duration-300 ",
           {
             "translate-x-0": isOpen,
-            "-translate-x-[calc(100%-24px)]": !isOpen,
+            "-translate-x-[calc(100%-32px)]": !isOpen,
           }
         )}
       >
@@ -111,7 +111,7 @@ const DashboardSideBar = ({
         <button
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Close panel" : "Open panel"}
-          className="group cursor-pointer h-6 w-6 mt-24 flex items-center justify-center text-white bg-violet-600 rounded-tr-sm rounded-br-sm transition hover:bg-violet-700"
+          className="group cursor-pointer h-8 w-8 mt-24 flex items-center justify-center text-white bg-violet-600 rounded-tr-sm rounded-br-sm transition hover:bg-violet-700"
         >
           {isOpen ? <IconX size={16} /> : <Maximize2 size={14} />}
         </button>

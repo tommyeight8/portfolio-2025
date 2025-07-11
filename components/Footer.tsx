@@ -110,7 +110,7 @@ export default function Footer() {
             </li>
           </ul>
           <Image
-            src="/images/tommyvong-logo.png"
+            src="/images/tv.png"
             alt="tommy vong logo"
             width={80}
             height={80}

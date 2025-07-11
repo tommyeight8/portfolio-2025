@@ -106,7 +106,7 @@ export default function CreateProjectModal() {
     <>
       <button
         onClick={openCreateProjectModal}
-        className="bg-violet-600 cursor-pointer flex justify-center items-center rounded-full h-8 w-8 text-white
+        className="bg-violet-600 cursor-pointer flex justify-center items-center rounded-full h-10 w-10 md:h-12 md:w-12 text-white
         hover:bg-violet-700 hover:scale-105 transition duration-200 fixed bottom-4 right-4 z-50"
       >
         <IconPlus size={16} className="text-white" />
@@ -114,7 +114,7 @@ export default function CreateProjectModal() {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-          <div className="bg-white dark:bg-zinc-900 w-full max-w-lg p-6 rounded-lg shadow-xl">
+          <div className="bg-white dark:bg-zinc-900 w-[90%] md:w-full md:max-w-lg p-6 rounded-lg shadow-xl">
             <h2 className="text-xl font-bold mb-4">
               {projectBeingEdited ? "Update Project" : "Create Project"}
             </h2>

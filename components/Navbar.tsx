@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSearch, IoClose, IoMenu } from "react-icons/io5";
 import { usePathname } from "next/navigation";
@@ -31,6 +31,12 @@ const Navbar = () => {
   const router = useRouter();
   const { signOut } = useClerk();
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     path: string,
@@ -55,12 +61,13 @@ const Navbar = () => {
       >
         <div className="w-full max-w-[1100px] mx-auto flex flex-col px-4">
           <div className="flex justify-between items-center h-[45px]">
-            <div className="relative flex w-8 h-8 justify-start">
+            <div className="relative flex w-[144px] h-8">
               <Image
-                src="/images/tommyvong-logo.png"
+                src="/images/tv.png"
                 alt="tommy-logo"
-                fill
-                className="object-contain"
+                width={36}
+                height={36}
+                className="object-contain invert-80 dark:invert-0"
               />
               {/* <IconBadgeTm
                 size={30}
@@ -70,34 +77,33 @@ const Navbar = () => {
 
             {/* Desktop Nav */}
             <ul className="hidden md:flex gap-12 justify-center">
-              <ul className="hidden md:flex gap-12 justify-center">
-                {navItems
-                  .filter(({ label }) => label !== "Dashboard")
-                  .map(({ label, path }) => {
-                    const isActive = pathname === path;
-                    return (
-                      <li
-                        key={label}
-                        className="relative group text-xs cursor-pointer"
+              {navItems
+                .filter(({ label }) => label !== "Dashboard")
+                .map(({ label, path }) => {
+                  const isActive = pathname === path;
+                  return (
+                    <li
+                      key={label}
+                      className="relative group text-xs cursor-pointer"
+                    >
+                      <a
+                        href={path}
+                        onClick={(e) => handleClick(e, path, label)}
+                        className="text-zinc-800 dark:text-gray-200 dark:group-hover:text-gray-100 transition"
                       >
-                        <a
-                          href={path}
-                          onClick={(e) => handleClick(e, path, label)}
-                          className="text-zinc-800 dark:text-gray-200 dark:group-hover:text-gray-100 transition"
-                        >
-                          {label}
-                        </a>
-                        <span
-                          className={`absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-800 dark:bg-gray-200 transition-transform origin-left duration-300 ${
-                            isActive
-                              ? "scale-x-100"
-                              : "scale-x-0 group-hover:scale-x-100"
-                          }`}
-                        />
-                      </li>
-                    );
-                  })}
-
+                        {label}
+                      </a>
+                      <span
+                        className={`absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-800 dark:bg-gray-200 transition-transform origin-left duration-300 ${
+                          isActive
+                            ? "scale-x-100"
+                            : "scale-x-0 group-hover:scale-x-100"
+                        }`}
+                      />
+                    </li>
+                  );
+                })}
+              {isMounted && (
                 <SignedIn>
                   <li className="relative group text-xs cursor-pointer">
                     <a
@@ -116,10 +122,10 @@ const Navbar = () => {
                     />
                   </li>
                 </SignedIn>
-              </ul>
+              )}
             </ul>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-[144px]">
               {/* Theme Toggle */}
               <ModeToggle />
 
@@ -133,30 +139,32 @@ const Navbar = () => {
               </SignedOut>
 
               {/* 👇 Signed In: show user button with dropdown */}
-              <SignedIn>
-                <div className="relative">
-                  <div
-                    onClick={() => setDropdownOpen((prev) => !prev)}
-                    className="text-zinc-800 dark:text-gray-200 cursor-pointer p-2 rounded-full bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-800 flex items-center justify-center transition"
-                  >
-                    <IconUser className="h-4 w-4" />
-                  </div>
-
-                  {dropdownOpen && (
-                    <div className="absolute right-0 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg z-50 min-w-[140px] p-2">
-                      <button
-                        onClick={async () => {
-                          await signOut();
-                          router.push("/"); // redirect to home
-                        }}
-                        className="flex justify-center cursor-pointer items-center gap-1 text-sm text-zinc-800 dark:text-gray-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 w-full text-left px-3 py-1.5 rounded transition"
-                      >
-                        Sign Out <IconLogout size={16} />
-                      </button>
+              {isMounted && (
+                <SignedIn>
+                  <div className="relative">
+                    <div
+                      onClick={() => setDropdownOpen((prev) => !prev)}
+                      className="text-zinc-800 dark:text-gray-200 cursor-pointer p-2 rounded-full bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-800 flex items-center justify-center transition"
+                    >
+                      <IconUser className="h-4 w-4" />
                     </div>
-                  )}
-                </div>
-              </SignedIn>
+
+                    {dropdownOpen && (
+                      <div className="absolute right-0 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg z-50 min-w-[140px] p-2">
+                        <button
+                          onClick={async () => {
+                            await signOut();
+                            router.push("/"); // redirect to home
+                          }}
+                          className="flex justify-center cursor-pointer items-center gap-1 text-sm text-zinc-800 dark:text-gray-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 w-full text-left px-3 py-1.5 rounded transition"
+                        >
+                          Sign Out <IconLogout size={16} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </SignedIn>
+              )}
 
               {/* Search Button */}
               <button
@@ -173,7 +181,7 @@ const Navbar = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="md:hidden text-zinc-300 hover:text-zinc-200 text-2xl"
+                className="md:hidden text-zinc-800 dark:text-gray-200 hover:text-zinc-200 text-2xl"
               >
                 <IoMenu />
               </button>
@@ -211,7 +219,7 @@ const Navbar = () => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="fixed top-0 right-0 w-3/4 h-full bg-[#1A1A1D] shadow-lg z-[999]"
+            className="fixed top-0 right-0 w-3/4 h-full bg-[#1A1A1D] shadow-lg z-[999] border-l border-zinc-800"
           >
             <div className="flex justify-end p-4">
               <button
@@ -221,18 +229,55 @@ const Navbar = () => {
                 <IoClose />
               </button>
             </div>
-            <ul className="flex flex-col gap-6 px-6 pt-4 text-lg text-zinc-300">
-              {navItems.map(({ label, path }) => (
-                <li key={label}>
-                  <a
-                    href={path}
-                    onClick={(e) => handleClick(e, path, label)}
-                    className="block py-2 hover:text-white transition"
+
+            <ul className="hidden md:flex gap-12 justify-center">
+              {navItems.map(({ label, path }) => {
+                if (label === "Dashboard") {
+                  return (
+                    <SignedIn key={label}>
+                      <li className="relative group text-xs cursor-pointer">
+                        <a
+                          href={path}
+                          onClick={(e) => handleClick(e, path, label)}
+                          className="text-zinc-800 dark:text-gray-200 dark:group-hover:text-gray-100 transition"
+                        >
+                          {label}
+                        </a>
+                        <span
+                          className={`absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-800 dark:bg-gray-200 transition-transform origin-left duration-300 ${
+                            pathname === path
+                              ? "scale-x-100"
+                              : "scale-x-0 group-hover:scale-x-100"
+                          }`}
+                        />
+                      </li>
+                    </SignedIn>
+                  );
+                }
+
+                // default render for other items
+                return (
+                  <li
+                    key={label}
+                    className="relative group text-xs cursor-pointer"
                   >
-                    {label}
-                  </a>
-                </li>
-              ))}
+                    <a
+                      href={path}
+                      onClick={(e) => handleClick(e, path, label)}
+                      className="text-zinc-800 dark:text-gray-200 dark:group-hover:text-gray-100 transition"
+                    >
+                      {label}
+                    </a>
+                    <span
+                      className={`absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-800 dark:bg-gray-200 transition-transform origin-left duration-300 ${
+                        pathname === path
+                          ? "scale-x-100"
+                          : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </li>
+                );
+              })}
             </ul>
           </motion.div>
         )}

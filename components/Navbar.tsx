@@ -230,51 +230,35 @@ const Navbar = () => {
               </button>
             </div>
 
-            <ul className="hidden md:flex gap-12 justify-center">
+            <ul className="flex flex-col gap-6 px-6 pt-4 text-lg text-zinc-300 md:hidden">
               {navItems.map(({ label, path }) => {
                 if (label === "Dashboard") {
                   return (
-                    <SignedIn key={label}>
-                      <li className="relative group text-xs cursor-pointer">
-                        <a
-                          href={path}
-                          onClick={(e) => handleClick(e, path, label)}
-                          className="text-zinc-800 dark:text-gray-200 dark:group-hover:text-gray-100 transition"
-                        >
-                          {label}
-                        </a>
-                        <span
-                          className={`absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-800 dark:bg-gray-200 transition-transform origin-left duration-300 ${
-                            pathname === path
-                              ? "scale-x-100"
-                              : "scale-x-0 group-hover:scale-x-100"
-                          }`}
-                        />
-                      </li>
-                    </SignedIn>
+                    isMounted && (
+                      <SignedIn key={label}>
+                        <li>
+                          <a
+                            href={path}
+                            onClick={(e) => handleClick(e, path, label)}
+                            className="block py-2 hover:text-white transition"
+                          >
+                            {label}
+                          </a>
+                        </li>
+                      </SignedIn>
+                    )
                   );
                 }
 
-                // default render for other items
                 return (
-                  <li
-                    key={label}
-                    className="relative group text-xs cursor-pointer"
-                  >
+                  <li key={label}>
                     <a
                       href={path}
                       onClick={(e) => handleClick(e, path, label)}
-                      className="text-zinc-800 dark:text-gray-200 dark:group-hover:text-gray-100 transition"
+                      className="block py-2 hover:text-white transition"
                     >
                       {label}
                     </a>
-                    <span
-                      className={`absolute left-0 -bottom-0.5 w-full h-[2px] bg-zinc-800 dark:bg-gray-200 transition-transform origin-left duration-300 ${
-                        pathname === path
-                          ? "scale-x-100"
-                          : "scale-x-0 group-hover:scale-x-100"
-                      }`}
-                    />
                   </li>
                 );
               })}

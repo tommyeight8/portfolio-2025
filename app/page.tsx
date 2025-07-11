@@ -13,7 +13,7 @@ import LenisProvider from "@/providers/LenisProvider";
 export default function Home() {
   return (
     <div className="">
-      <LenisProvider />
+      {/* <LenisProvider /> */}
       {/* <Hero /> */}
       <HeroParallaxDemo />
       {/* <SkillPills /> */}

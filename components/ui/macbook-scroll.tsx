@@ -9,6 +9,7 @@ import {
   IconCaretRightFilled,
   IconCaretUpFilled,
   IconChevronUp,
+  IconLink,
   IconMicrophone,
   IconMoon,
   IconPlayerSkipForward,
@@ -28,6 +29,7 @@ import { IconCaretDownFilled } from "@tabler/icons-react";
 import Image from "next/image";
 
 import clsx from "clsx";
+import Link from "next/link";
 
 export const MacbookScroll = ({
   src,
@@ -71,30 +73,42 @@ export const MacbookScroll = ({
     [0, 0.2],
     [0.6, isMobile ? 1 : 1.5]
   );
-  const translate = useTransform(scrollYProgress, [0, 1], [0, 1500]);
+  const translateRange = isMobile ? [0, 1000] : [0, 1500];
+  const translate = useTransform(scrollYProgress, [0, 1], translateRange);
   const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0]);
   const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
-  const width = useTransform(scrollYProgress, [0, 0.3], ["12rem", "300vw"]);
+  const width = useTransform(scrollYProgress, [0, 0.3], ["12rem", "400vw"]);
   // ✅ Now decide the range **before** calling the hook
-  const heightRange = isMobile ? ["12rem", "120vh"] : ["12rem", "300vh"];
+  const heightRange = isMobile ? ["12rem", "150vh"] : ["12rem", "300vh"];
   const height = useTransform(scrollYProgress, [0, 0.3], heightRange);
+
+  const dynamicHeight = useTransform(
+    rotate,
+    [-28, -15, 0], // more nuanced control
+    ["24rem", "36rem", "100vh"]
+  );
+  const dynamicWidth = useTransform(
+    rotate,
+    [-28, 0],
+    ["32rem", "min(90vw, 64rem)"]
+  );
 
   return (
     <div
       ref={ref}
-      className="flex min-h-[120vh] md:min-h-[190vh] shrink-0 scale-[0.9] transform flex-col items-center justify-start py-0 [perspective:800px] sm:scale-90 md:scale-100 md:py-0 md:pt-6"
+      className="flex min-h-[100vh] md:min-h-[190vh] shrink-0 scale-[0.70] transform flex-col items-center justify-start py-0 [perspective:800px] sm:scale-90 md:scale-100 md:py-0 md:pt-6"
     >
       <motion.h2
         style={{
           translateY: textTransform,
           opacity: textOpacity,
         }}
-        className="mb-20 text-center text-3xl font-bold text-neutral-800 dark:text-white"
+        className="mb-20 mt-8 text-center text-3xl font-bold text-neutral-800 dark:text-white"
       >
         {title || (
-          <span className="text-3xl font-bold mb-12 text-center text-gray-100">
+          <span className="text-3xl font-bold mb-12 text-center text-zinc-800 dark:text-gray-100 uppercase">
             Hello There
           </span>
         )}
@@ -108,9 +122,11 @@ export const MacbookScroll = ({
         translate={translate}
         height={height}
         width={width}
+        dHeight={dynamicHeight}
+        dWidth={dynamicWidth}
       />
       {/* Base area */}
-      <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729]">
+      <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729] shadow-xl shadow-black/40">
         {/* above keyboard bar */}
         <div className="relative h-10 w-full">
           <div className="absolute inset-x-0 mx-auto h-4 w-[80%] bg-[#050505]" />
@@ -145,6 +161,8 @@ export const Lid = ({
   src,
   width,
   height,
+  dHeight,
+  dWidth,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
@@ -153,6 +171,8 @@ export const Lid = ({
   src?: string;
   width: MotionValue<string>;
   height: MotionValue<string>;
+  dWidth: MotionValue<string>;
+  dHeight: MotionValue<string>;
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -186,9 +206,9 @@ export const Lid = ({
           width,
           height,
         }}
-        className="aspect-square absolute left-1/2 top-[96%] z-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+        className="absolute left-1/2 top-[90%] z-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
       >
-        <div className="m-auto text-center text-gray-500">Outter div here</div>
+        {/* <div className="m-auto text-center text-gray-500">Outter div here</div> */}
       </motion.div>
 
       <motion.div
@@ -200,30 +220,37 @@ export const Lid = ({
           transformStyle: "preserve-3d",
           transformOrigin: "top",
         }}
-        className="absolute inset-0 h-96 w-[32rem] rounded-2xl  p-2"
+        className="absolute inset-0 h-96 w-[32rem] rounded-md p-2 bg-white"
       >
-        <div className="absolute inset-0 rounded-lg bg-white p-4 pt-6 lg:pt-12">
-          <div className="flex gap-8">
-            <div className="flex items-center gap-1 text-[10px] group rounded-[150px] transition duration-200 hover:text-white px-4 py-2 hover:bg-[#101010] cursor-pointer border border-[#101010] leading-0">
+        <div className="absolute inset-0 rounded-lg p-4 pt-6 lg:pt-12">
+          <div className="flex gap-2">
+            <div className="flex items-center gap-1 text-[12px] md:text-[10px] group rounded-[150px] transition duration-200 text-zinc-800 hover:text-white px-4 py-2 hover:bg-[#101010] cursor-pointer border border-transparent leading-0">
               <IconPlus
                 size={10}
                 className="group-hover:rotate-180 transition duration-300"
               />
               <span>Next JS Projects</span>
             </div>
-            <div className="flex items-center gap-1 text-[10px] group rounded-[150px] transition duration-200 hover:text-white px-4 py-2 hover:bg-[#101010] cursor-pointer border border-[#101010] leading-0">
+            <div className="flex items-center gap-1 text-[12px] md:text-[10px] group rounded-[150px] transition duration-200 text-zinc-800 hover:text-white px-4 py-2 hover:bg-[#101010] cursor-pointer border border-transparent leading-0">
               <IconPlus
                 size={10}
                 className="group-hover:rotate-180 transition duration-300"
               />
-              Shopify Websites
+              Shopify Development
+            </div>
+            <div className="flex items-center gap-1 text-[12px] md:text-[10px] group rounded-[150px] transition duration-200 text-zinc-800 hover:text-white px-4 py-2 hover:bg-[#101010] cursor-pointer border border-transparent leading-0">
+              <IconPlus
+                size={10}
+                className="group-hover:rotate-180 transition duration-300"
+              />
+              Graphic Design
             </div>
           </div>
-          <div className="flex justify-center items-end h-[90%] relative">
+          <div className="flex justify-center items-end h-[80%] relative">
             {/* Pink div fixed at bottom */}
-            <div className="w-full flex items-center justify-around">
-              <div>
-                <h3 className="font-raleway-thin text-4xl uppercase text-[#101010]">
+            <div className="w-full flex items-center justify-between">
+              <div className="">
+                <h3 className="font-raleway-thin text-3xl md:text-4xl uppercase text-[#101010]">
                   TOMMY HERE
                 </h3>
                 <p className="font-raleway font-thin text-[11px] flex items-center gap-1 text-[#666]">
@@ -232,10 +259,26 @@ export const Lid = ({
                   </span>{" "}
                   Graphic designer & Web Developer
                 </p>
+                <div className="flex items-center gap-1 mt-2">
+                  <Link
+                    href="/about"
+                    className="leading-none w-fit mt-2 flex items-center gap-1 text-[12px] md:text-[10px] border border-[#101010]
+                   rounded-[150px] transition duration-200 text-white px-4 py-2 bg-[#101010] cursor-pointer hover:opacity-90"
+                  >
+                    About Me
+                  </Link>
+                  <Link
+                    href="/portfolio"
+                    className="leading-none w-fit mt-2 flex items-center gap-1 text-[12px] md:text-[10px] border border-[#101010]
+                   rounded-[150px] transition duration-200 text-[#101010] hover:text-white px-4 py-2 cursor-pointer hover:bg-[#101010] "
+                  >
+                    Portfolio
+                  </Link>
+                </div>
               </div>
-              <div className="h-48 w-48 relative overflow-hidden rounded-full aspect-square ml-4">
+              <div className="h-56 w-42 relative">
                 <Image
-                  src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src="https://images.unsplash.com/photo-1743027586028-2648aba113cc?q=80&w=691&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="profile"
                   fill
                   className="object-cover"
@@ -244,7 +287,7 @@ export const Lid = ({
             </div>
           </div>
 
-          <span className="text-[10px] flex items-center gap-1">
+          <span className="text-[10px] flex items-center justify-center gap-1 mt-8 text-zinc-800">
             Scroll Down <IconArrowDown size={12} className="animate-bounce" />
           </span>
         </div>

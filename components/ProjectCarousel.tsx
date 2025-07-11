@@ -8,7 +8,7 @@ import { IconArrowRight } from "@tabler/icons-react";
 const projects = [
   {
     title: "Creative Portfolio",
-    description: "A minimalist portfolio to showcase design and dev work.",
+    description: "A minimalist portfolio",
     image:
       "https://images.unsplash.com/photo-1626785774625-ddcddc3445e9?q=80&w=1171&auto=format&fit=crop",
   },
@@ -68,8 +68,10 @@ const ProjectSlider = () => {
   }, []);
 
   return (
-    <section className="w-full px-6 py-16 bg-[#101010] text-white relative">
-      <h2 className="text-3xl font-bold mb-12 text-center">Recent Projects</h2>
+    <section className="w-full px-6 py-16 bg-white dark:bg-[#101010] text-white relative">
+      <h2 className="text-3xl font-bold mb-12 text-center text-zinc-700 dark:text-neutral-200">
+        Recent Projects
+      </h2>
 
       <div className="flex gap-1 items-center text-violet-500 absolute bottom-6 left-1/2 -translate-x-1/2 cursor-pointer rounded-md transition duration-200 px-6 py-2 hover:bg-violet-500 hover:text-zinc-900">
         View All <IconArrowRight size={18} />
@@ -99,13 +101,13 @@ const ProjectSlider = () => {
               className="flex-[0_0_calc(100%/4-18px)] sm:flex-[0_0_calc(100%/3-16px)] xs:flex-[0_0_calc(100%/2-12px)] py-8"
               style={{ flex: `0 0 ${100 / slidesPerView}%` }}
             >
-              <div className="shadow-black/30 bg-zinc-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
+              <div className="h-full flex flex-col shadow-black/30 bg-zinc-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
                 <img
                   src={project.image}
                   alt={project.title}
                   className="w-full h-72 object-cover"
                 />
-                <div className="p-4">
+                <div className="p-4 flex flex-col flex-1">
                   <h4 className="text-lg font-bold mb-1">{project.title}</h4>
                   <p className="text-sm text-zinc-400">{project.description}</p>
                 </div>

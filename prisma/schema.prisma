@@ -1,0 +1,26 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ProjectCategory {
+  GRAPHIC_DESIGN
+  FULL_STACK
+  WEB_DESIGN
+  SHOPIFY_DEVELOPMENT
+  SHOPIFY_STORE_FRONT
+}
+
+model Project {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  imageUrl    String
+  position    Int 
+  category    ProjectCategory
+  createdAt   DateTime @default(now())
+}

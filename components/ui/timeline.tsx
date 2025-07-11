@@ -32,18 +32,17 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           start: "top center",
           end: "bottom center",
           onEnter: () => {
-            gsap.utils
-              .toArray<HTMLElement>(".timeline-heading")
-              .forEach((el) => {
-                el.classList.remove("text-neutral-200");
-                el.classList.add("text-neutral-700");
-              });
-            heading.classList.remove("text-neutral-700");
-            heading.classList.add("text-neutral-200");
+            document.querySelectorAll(".timeline-heading").forEach((el) => {
+              el.classList.remove("active-timeline-heading");
+              el.classList.add("inactive-timeline-heading");
+            });
+
+            heading.classList.remove("inactive-timeline-heading");
+            heading.classList.add("active-timeline-heading");
           },
           onLeaveBack: () => {
-            heading.classList.remove("text-neutral-200");
-            heading.classList.add("text-neutral-700");
+            heading.classList.remove("active-timeline-heading");
+            heading.classList.add("inactive-timeline-heading");
           },
         });
       }
@@ -70,21 +69,24 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div className="w-full bg-[#101010] font-sans md:px-10" ref={containerRef}>
+    <div
+      className="w-full bg-gray-50 dark:bg-[#101010] font-sans md:px-10"
+      ref={containerRef}
+    >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-white max-w-4xl flex flex-col gap-1">
+        <h2 className="text-lg md:text-4xl mb-4 text-zinc-800 dark:text-gray-100 max-w-4xl flex flex-col gap-1">
           <span className="p-0 m-0 inline-block h-1 w-12 bg-purple-500">
             &nbsp;
           </span>
           My Career Timeline
         </h2>
 
-        <p className="flex flex-col text-neutral-500 text-sm md:text-base max-w-sm">
+        <p className="flex flex-col text-neutral-800 dark:text-neutral-300 text-sm md:text-base max-w-sm">
           A curated journey through design, development, and everything in
           between.
         </p>
         <br></br>
-        <p className="text-neutral-100 text-sm md:text-base max-w-sm">
+        <p className="text-neutral-800 dark:text-neutral-300 text-sm md:text-base max-w-sm">
           Over the years, I've worn many hats — from crafting pixel-perfect UIs
           to launching complete design systems. This timeline highlights the key
           milestones, products, and ideas I've brought to life.

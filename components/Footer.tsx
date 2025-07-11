@@ -32,8 +32,8 @@ export default function Footer() {
       id="contact"
       className="w-full bg-[#101010] p-8 text-white flex flex-col items-center justify-center"
     >
-      <div className="w-full max-w-[1100px] flex gap-12 border-t-1 border-zinc-800 pt-12">
-        <div className="w-1/2">
+      <div className="w-full max-w-[1100px] flex flex-col md:flex-row gap-12 border-t-0 dark:border-t-1 border-zinc-900 pt-12">
+        <div className="w-full md:w-1/2">
           <h3 className="text-xl font-semibold mb-4">Contact Me</h3>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
@@ -41,7 +41,7 @@ export default function Footer() {
                 type="text"
                 {...register("name")}
                 placeholder="Name"
-                className="w-full p-2 rounded bg-zinc-800 text-white border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 rounded bg-zinc-900 text-white border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               {errors.name && (
                 <p className="text-red-400 text-sm mt-1">
@@ -54,7 +54,7 @@ export default function Footer() {
                 type="email"
                 {...register("email")}
                 placeholder="Email"
-                className="w-full p-2 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 rounded bg-zinc-900 text-white border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               {errors.email && (
                 <p className="text-red-400 text-sm mt-1">
@@ -66,7 +66,7 @@ export default function Footer() {
               <textarea
                 {...register("message")}
                 placeholder="Message"
-                className="w-full p-2 rounded bg-zinc-800 text-white border border-zinc-700 h-28 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 rounded bg-zinc-900 text-white border border-zinc-800 h-28 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               {errors.message && (
                 <p className="text-red-400 text-sm mt-1">
@@ -77,10 +77,11 @@ export default function Footer() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="cursor-pointer bg-violet-600 hover:bg-violet-700 transition text-white px-4 py-2 rounded disabled:opacity-50"
+              className="cursor-pointer bg-violet-600 hover:bg-violet-700 transition duration-200 ease-in-out text-white px-4 py-2 rounded shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
+
             {isSubmitSuccessful && (
               <p className="text-green-400 text-sm mt-2">
                 Message sent successfully!
@@ -89,18 +90,28 @@ export default function Footer() {
           </form>
         </div>
 
-        <div className="w-1/2">
-          <ul className="flex gap-8 text-gray-300">
-            <li className="hover:text-white transition">Home</li>
-            <li className="hover:text-white transition">About</li>
-            <li className="hover:text-white transition">Works</li>
-            <li className="hover:text-white transition">Contact</li>
-            <li className="hover:text-white transition">Resume</li>
+        <div className="w-full md:w-1/2">
+          <ul className="flex justify-around gap-2 md:gap-8 text-gray-400">
+            <li className="hover:text-white transition cursor-pointer text-xs md:text-sm">
+              Home
+            </li>
+            <li className="hover:text-white transition cursor-pointer text-xs md:text-sm">
+              About
+            </li>
+            <li className="hover:text-white transition cursor-pointer text-xs md:text-sm">
+              Works
+            </li>
+            <li className="hover:text-white transition cursor-pointer text-xs md:text-sm">
+              Contact
+            </li>
+            <li className="hover:text-white transition cursor-pointer text-xs md:text-sm">
+              Resume
+            </li>
           </ul>
         </div>
       </div>
 
-      <div className="text-center text-zinc-700 text-xs border-t-1 border-zinc-800 w-full max-w-[1100px] mt-8 pt-4">
+      <div className="text-center text-zinc-700 text-xs border-t-1 border-zinc-900 w-full max-w-[1100px] mt-8 pt-4">
         &copy; {new Date().getFullYear()} Tommy Vong.
       </div>
     </footer>

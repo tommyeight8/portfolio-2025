@@ -43,7 +43,7 @@ export const HeroParallax = ({
     springConfig
   );
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.5], [0.2, 1]),
+    useTransform(scrollYProgress, [0, 0.5], [0.5, 1]),
     springConfig
   );
   const rotateZ = useSpring(
@@ -71,7 +71,7 @@ export const HeroParallax = ({
   return (
     <div
       ref={ref}
-      className="pt-30 pb-0 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="bg-gray-50 dark:bg-[#101010] pt-30 pb-0 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
       style={{ minHeight }}
     >
       <Header />
@@ -119,11 +119,11 @@ export const HeroParallax = ({
 export const Header = () => {
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0 z-10">
-      <h1 className="text-2xl md:text-6xl font-bold text-white flex flex-col gap-2">
+      <h1 className="text-2xl md:text-6xl font-bold text-zinc-800 dark:text-white flex flex-col gap-2">
         <span>Designing Bold Brands</span>{" "}
         <span>& Building Modern Websites</span>
       </h1>
-      <p className="max-w-2xl text-base md:text-xl mt-8 text-neutral-200">
+      <p className="max-w-2xl text-base md:text-xl mt-8 text-zinc-800 dark:text-neutral-200 font-semibold">
         Pixel-perfect design meets production-ready code.
       </p>
     </div>

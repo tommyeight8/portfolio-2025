@@ -12,12 +12,15 @@ import LenisProvider from "@/providers/LenisProvider";
 
 export default function Home() {
   return (
-    <div className="bg-[#101010]">
+    <div className="">
       <LenisProvider />
       {/* <Hero /> */}
       <HeroParallaxDemo />
       {/* <SkillPills /> */}
-      <div className="h-auto overflow-hidden bg-[radial-gradient(circle_at_center,_#333_0%,_#101010_60%)]">
+      <div
+        className="h-auto overflow-hidden bg-[radial-gradient(ellipse_at_center,_theme('colors.gray.300')_0%,_theme('colors.gray.50')_70%)]
+ dark:bg-[radial-gradient(circle_at_center,_#333_0%,_#101010_60%)]"
+      >
         <MacbookScroll />
       </div>
 

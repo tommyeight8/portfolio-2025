@@ -196,14 +196,14 @@ const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                className="mt-2 w-1/2"
+                className="mt-2 w-full md:w-1/2"
               >
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search projects..."
-                  className="w-full p-2 rounded-md bg-zinc-800 text-white border border-zinc-700"
+                  className="w-full p-2 rounded-md bg-gray-100 dark:bg-zinc-800 text-zinc-800 dark:text-white border border-zinc-200 dark:border-zinc-700"
                 />
               </motion.div>
             )}

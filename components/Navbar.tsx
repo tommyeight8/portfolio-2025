@@ -44,13 +44,8 @@ const Navbar = () => {
   ) => {
     if (label === "Contact" && path.startsWith("#")) {
       e.preventDefault();
-      const section = document.querySelector(path) as HTMLElement | null;
-      if (section) {
-        window.lenis?.scrollTo(section, { offset: -50 });
-      }
-
-      if (section) window.lenis?.scrollTo(section, { offset: -50 });
-
+      const section = document.querySelector(path);
+      if (section) section.scrollIntoView({ behavior: "smooth" });
       setMobileMenuOpen(false);
     } else {
       setMobileMenuOpen(false);

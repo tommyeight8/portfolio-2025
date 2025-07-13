@@ -5,6 +5,7 @@ import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 
 import { ProjectProvider } from "@/context/ProjectContext";
+import { ReactLenis } from "lenis/react";
 
 import {
   ClerkProvider,
@@ -55,7 +56,6 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               >
-                <LenisProvider />
                 <div className="flex flex-col min-h-screen text-foreground transition-colors">
                   <Navbar />
                   <main className="flex-grow">

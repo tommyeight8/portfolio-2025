@@ -11,7 +11,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full relative">
+    <div className="flex min-h-screen w-full relative bg-gray-100 dark:bg-[#101010]">
       {/* Sidebar */}
       <DashboardSideBar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 

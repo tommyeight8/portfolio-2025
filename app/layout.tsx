@@ -19,6 +19,7 @@ import { InitProjects } from "@/components/InitProjects";
 import { PostHogProvider } from "@/providers/PostHogProvider";
 
 import { Suspense } from "react"; // 👈 ADD THIS
+import LenisProvider from "@/providers/LenisProvider";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -54,6 +55,7 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               >
+                <LenisProvider />
                 <div className="flex flex-col min-h-screen text-foreground transition-colors">
                   <Navbar />
                   <main className="flex-grow">

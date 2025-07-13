@@ -114,7 +114,7 @@ export default function Footer() {
             alt="tommy vong logo"
             width={80}
             height={80}
-            className="mt-12 md:mt-0 self-center md:self-end w-[60px] h-[60px] md:w-[80px] md:h-[80px] object-contain"
+            className="mt-12 md:mt-0 self-center md:self-end w-[70px] h-[70px] md:w-[80px] md:h-[80px] object-contain"
             priority
           />
         </div>

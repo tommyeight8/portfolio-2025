@@ -57,14 +57,14 @@ export default function RootLayout({
                 disableTransitionOnChange
               >
                 <div className="flex flex-col min-h-screen text-foreground transition-colors">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <ProjectProvider>
+                  <ProjectProvider>
+                    <Navbar />
+                    <main className="flex-grow">
                       <InitProjects />
                       {children}
-                    </ProjectProvider>
-                  </main>
-                  <ConditionalFooter />
+                    </main>
+                    <ConditionalFooter />
+                  </ProjectProvider>
                 </div>
               </ThemeProvider>
             </body>

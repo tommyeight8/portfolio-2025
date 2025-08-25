@@ -5,6 +5,7 @@ import { EllipsisVertical } from "lucide-react";
 import { removeProject } from "@/app/actions/remove-project";
 
 import { reorderProjects } from "@/app/actions/reorder-projects";
+import ProjectSkeleton from "@/components/ProjectsSkeleton";
 
 const categoryColorMap: Record<string, string> = {
   GRAPHIC_DESIGN: "bg-violet-400",
@@ -56,7 +57,8 @@ export default function ProjectList() {
   };
 
   if (projects.length === 0) {
-    return <p className="text-gray-500">No projects yet.</p>;
+    // return <p className="text-gray-500">No projects yet.</p>;
+    return <ProjectSkeleton />;
   }
 
   return (

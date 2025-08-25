@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSearch, IoClose, IoMenu } from "react-icons/io5";
 import { usePathname } from "next/navigation";
@@ -11,11 +17,15 @@ import Link from "next/link";
 import { SignedIn, SignedOut, SignOutButton, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { useProjectContext } from "@/context/ProjectContext";
+
+import { toSlug } from "@/lib/slug-it";
 
 const navItems = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
-  { label: "Portfolio", path: "/portfolio" },
+  { label: "Projects", path: "/projects" },
   { label: "Contact", path: "#contact" },
   { label: "Resume", path: "/resume" },
   { label: "Dashboard", path: "/dashboard" },
@@ -33,9 +43,66 @@ const Navbar = () => {
 
   const [isMounted, setIsMounted] = useState(false);
 
+  const debouncedQuery = useDebouncedValue(query, 150);
+  const { projects } = useProjectContext();
+
+  const results = useMemo(() => {
+    const q = debouncedQuery.trim().toLowerCase();
+    if (!q) return [];
+    return projects
+      .filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          (p.description?.toLowerCase?.().includes(q) ?? false)
+      )
+      .sort((a, b) => a.position - b.position)
+      .slice(0, 8); // cap results
+  }, [projects, debouncedQuery]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const listRef = useRef<HTMLUListElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (searchOpen) {
+      // Focus after mount
+      const id = requestAnimationFrame(() => inputRef.current?.focus());
+      return () => cancelAnimationFrame(id);
+    }
+  }, [searchOpen]);
+
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (!searchOpen || results.length === 0) return;
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setActiveIndex((i) => (i + 1) % results.length);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setActiveIndex((i) => (i - 1 + results.length) % results.length);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        const hit = results[activeIndex];
+        if (hit) {
+          // navigate – adjust this to your route shape if needed
+          router.push(`/projects/${toSlug(hit.title)}`);
+          setSearchOpen(false);
+        }
+      } else if (e.key === "Escape") {
+        setSearchOpen(false);
+      }
+    },
+    [results, activeIndex, searchOpen, router]
+  );
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    setSearchOpen(false);
+    setQuery("");
+  }, [pathname]);
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -54,14 +121,10 @@ const Navbar = () => {
 
   return (
     <>
-      <motion.header
-        animate={{ height: searchOpen ? 240 : 45 }}
-        transition={{ type: "spring", damping: 20, stiffness: 120 }}
-        className="w-full sticky top-0 bg-white dark:bg-[#1A1A1D] z-50 shadow border-b border-zinc-50 dark:border-zinc-800"
-      >
-        <div className="w-full max-w-[1100px] mx-auto flex flex-col px-4">
+      <motion.header className="w-full sticky top-0 bg-white dark:bg-[#1A1A1D] z-50 shadow border-b border-zinc-50 dark:border-zinc-800">
+        <div className="w-full max-w-[1100px] mx-auto flex flex-col px-4 relative">
           <div className="flex justify-between items-center h-[45px]">
-            <div className="relative flex w-[144px] h-8">
+            <Link href={"/"} className="relative flex w-[144px] h-8">
               <Image
                 src="/images/tv.png"
                 alt="tommy-logo"
@@ -69,11 +132,7 @@ const Navbar = () => {
                 height={36}
                 className="object-contain invert-80 dark:invert-0"
               />
-              {/* <IconBadgeTm
-                size={30}
-                className="text-zinc-800 dark:text-gray-200"
-              /> */}
-            </div>
+            </Link>
 
             {/* Desktop Nav */}
             <ul className="hidden md:flex gap-12 justify-center">
@@ -168,7 +227,15 @@ const Navbar = () => {
 
               {/* Search Button */}
               <button
-                onClick={() => setSearchOpen((prev) => !prev)}
+                onClick={() => {
+                  if (searchOpen) {
+                    setQuery(""); // clear text
+                    setSearchOpen(false); // close bar
+                  } else {
+                    setSearchOpen(true); // open bar
+                    // focus handled by the effect
+                  }
+                }}
                 className="text-zinc-800 dark:text-gray-200 cursor-pointer p-2 rounded-full bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-800 flex items-center justify-center transition"
               >
                 {searchOpen ? (
@@ -187,85 +254,115 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-
-          {/* Search Box */}
-          <AnimatePresence>
-            {searchOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="mt-2 w-full md:w-1/2"
-              >
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search projects..."
-                  className="w-full p-2 rounded-md bg-gray-100 dark:bg-zinc-800 text-zinc-800 dark:text-white border border-zinc-200 dark:border-zinc-700"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
+        {/* Search Bar (full-width like header) + Absolute Results */}
+        <AnimatePresence>
+          {searchOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              // full-width bar directly under the 45px header row
+              className="absolute inset-x-0 top-full z-[60] pointer-events-none
+                 bg-white dark:bg-[#1A1A1D] shadow-sm"
+            >
+              {/* align with header container */}
+              <div className="max-w-[900px] mx-auto px-4 py-2 pointer-events-auto">
+                {/* anchor container for absolute results */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    placeholder="Search projects..."
+                    className="w-full p-2 rounded-md bg-gray-100 dark:bg-zinc-800 
+                       text-zinc-800 dark:text-white border 
+                       border-zinc-200 dark:border-zinc-700 outline-none"
+                  />
+
+                  {/* Results panel absolutely below input */}
+                  <AnimatePresence>
+                    {query.trim().length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.18 }}
+                        className="absolute left-0 right-0 top-full mt-2 rounded-md border 
+                           border-zinc-200 dark:border-zinc-700 bg-white/90 
+                           dark:bg-zinc-900/90 backdrop-blur shadow-lg"
+                        role="listbox"
+                        aria-label="Project search results"
+                      >
+                        {results.length === 0 ? (
+                          <div className="p-4 text-sm text-zinc-500">
+                            No projects found.
+                          </div>
+                        ) : (
+                          <ul
+                            ref={listRef}
+                            className="max-h-[320px] overflow-auto py-2"
+                          >
+                            {results.map((p, idx) => {
+                              const isActive = idx === activeIndex;
+                              return (
+                                <li key={p.id}>
+                                  <Link
+                                    href={`/projects/${toSlug(p.title)}`}
+                                    onClick={() => setSearchOpen(false)}
+                                    className={[
+                                      "flex items-center gap-3 px-3 py-2 transition",
+                                      isActive
+                                        ? "bg-zinc-100 dark:bg-zinc-800"
+                                        : "hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                                    ].join(" ")}
+                                    role="option"
+                                    aria-selected={isActive}
+                                    onMouseEnter={() => setActiveIndex(idx)}
+                                  >
+                                    {/* Thumbnail */}
+                                    <div className="relative h-10 w-10 shrink-0 rounded overflow-hidden border border-zinc-200 dark:border-zinc-700">
+                                      <Image
+                                        src={
+                                          p.imageUrl ||
+                                          "/images/placeholder.png"
+                                        }
+                                        alt={p.title}
+                                        fill
+                                        sizes="40px"
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                    {/* Title + description */}
+                                    <div className="min-w-0">
+                                      <div className="text-sm text-zinc-800 dark:text-zinc-100 truncate">
+                                        {p.title}
+                                      </div>
+                                      {p.description ? (
+                                        <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                                          {p.description}
+                                        </div>
+                                      ) : null}
+                                    </div>
+                                  </Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.header>
 
       {/* Mobile Slide-in Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "tween", duration: 0.3 }}
-            className="fixed top-0 right-0 w-3/4 h-full bg-[#1A1A1D] shadow-lg z-[999] border-l border-zinc-800"
-          >
-            <div className="flex justify-end p-4">
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-zinc-300 hover:text-white text-2xl"
-              >
-                <IoClose />
-              </button>
-            </div>
-
-            <ul className="flex flex-col gap-6 px-6 pt-4 text-lg text-zinc-300 md:hidden">
-              {navItems.map(({ label, path }) => {
-                if (label === "Dashboard") {
-                  return (
-                    isMounted && (
-                      <SignedIn key={label}>
-                        <li>
-                          <a
-                            href={path}
-                            onClick={(e) => handleClick(e, path, label)}
-                            className="block py-2 hover:text-white transition"
-                          >
-                            {label}
-                          </a>
-                        </li>
-                      </SignedIn>
-                    )
-                  );
-                }
-
-                return (
-                  <li key={label}>
-                    <a
-                      href={path}
-                      onClick={(e) => handleClick(e, path, label)}
-                      className="block py-2 hover:text-white transition"
-                    >
-                      {label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 };

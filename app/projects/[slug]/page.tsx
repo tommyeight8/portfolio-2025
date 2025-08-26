@@ -59,7 +59,7 @@ export default function ProjectPage() {
   }
 
   return (
-    <article className="max-w-[1200px] mx-auto p-4">
+    <article className="max-w-[1100px] mx-auto p-4">
       <div className="mb-6">
         <Link
           href="/projects"
@@ -69,7 +69,21 @@ export default function ProjectPage() {
         </Link>
       </div>
 
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row gap-2 md:gap-4">
+        <div className="w-full md:w-2/3 flex">
+          {project.imageUrl && (
+            <div className="mb-6 overflow-hidden relative w-full min-h-[600px]">
+              <Image
+                src={project.imageUrl}
+                alt={project.title}
+                fill
+                className="object-contain object-top" // <- align to top instead of center
+                sizes="(min-width: 1024px) 66vw, 100vw"
+              />
+            </div>
+          )}
+        </div>
+
         <div className="w-full md:w-1/3">
           <header className="mb-4">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -90,20 +104,6 @@ export default function ProjectPage() {
             <p className="text-gray-700 dark:text-gray-300 leading-7 mb-6 md:mb-0">
               {project.description}
             </p>
-          )}
-        </div>
-
-        <div className="w-full md:w-2/3 flex">
-          {project.imageUrl && (
-            <div className="mb-6 overflow-hidden relative w-full min-h-[600px]">
-              <Image
-                src={project.imageUrl}
-                alt={project.title}
-                fill
-                className="object-contain object-top" // <- align to top instead of center
-                sizes="(min-width: 1024px) 66vw, 100vw"
-              />
-            </div>
           )}
         </div>
       </div>

@@ -118,7 +118,9 @@ const ProjectSlider = () => {
                 />
                 <div className="p-4 flex flex-col flex-1">
                   <h4 className="text-lg font-bold mb-1">{project.title}</h4>
-                  <p className="text-sm text-zinc-400">{project.description}</p>
+                  <p className="text-sm text-zinc-400 line-clamp-2">
+                    {project.description}
+                  </p>
                 </div>
               </div>
             </Link>

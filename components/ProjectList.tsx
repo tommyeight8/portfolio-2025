@@ -33,14 +33,12 @@ export default function ProjectList() {
     countsByCategory,
   } = useProjectContext();
 
-  if (projects.length === 0) return <ProjectSkeleton />;
-
+  // --- Hooks must run on every render ---
   const total = useMemo(
     () => Object.values(countsByCategory).reduce((a, b) => a + b, 0),
     [countsByCategory]
   );
 
-  // Only show pills that have projects; keep "All" only if total > 0.
   const visibleFilters = useMemo(
     () =>
       FILTERS.filter(({ key }) =>
@@ -49,13 +47,11 @@ export default function ProjectList() {
     [countsByCategory, total]
   );
 
-  // Hide the entire bar if only "All" would be shown.
   const showFilterBar = useMemo(
     () => visibleFilters.some((f) => f.key !== "ALL"),
     [visibleFilters]
   );
 
-  // If the active category becomes empty, reset to "ALL".
   useEffect(() => {
     if (
       activeCategory !== "ALL" &&
@@ -65,6 +61,7 @@ export default function ProjectList() {
     }
   }, [activeCategory, countsByCategory, setActiveCategory]);
 
+  // --- Render ---
   return (
     <div className="w-full max-w-[900px] m-auto">
       {showFilterBar && (
@@ -92,7 +89,9 @@ export default function ProjectList() {
         </div>
       )}
 
-      {filteredProjects.length === 0 ? null : (
+      {projects.length === 0 ? (
+        <ProjectSkeleton />
+      ) : filteredProjects.length === 0 ? null : (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
             <li

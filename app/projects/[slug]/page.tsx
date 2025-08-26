@@ -72,12 +72,13 @@ export default function ProjectPage() {
       <div className="flex flex-col md:flex-row gap-2 md:gap-4">
         <div className="w-full md:w-2/3 flex">
           {project.imageUrl && (
-            <div className="mb-6 overflow-hidden relative w-full min-h-[600px]">
+            <div className="mb-6 overflow-hidden relative w-full h-auto">
               <Image
                 src={project.imageUrl}
                 alt={project.title}
-                fill
-                className="object-contain object-top" // <- align to top instead of center
+                width={1200} // give explicit width
+                height={0} // set height but keep ratio via style
+                className="object-contain object-top w-full h-auto"
                 sizes="(min-width: 1024px) 66vw, 100vw"
               />
             </div>

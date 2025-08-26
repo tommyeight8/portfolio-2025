@@ -34,6 +34,46 @@ const raleway = Raleway({
   display: "swap",
 });
 
+// app/layout.tsx or next/head (Next.js 13+)
+export const metadata = {
+  title: "Tommy | Shopify Developer, Full-Stack Engineer & Graphic Designer",
+  description:
+    "Portfolio of Tommy – Shopify developer, full-stack engineer, and graphic designer. I build custom e-commerce solutions, web apps, and creative brand experiences.",
+  keywords: [
+    "Shopify Developer",
+    "Full Stack Developer",
+    "Graphic Designer",
+    "E-commerce Development",
+    "Next.js",
+    "React",
+    "Web Design",
+    "Custom Shopify",
+    "Portfolio",
+  ],
+  openGraph: {
+    title: "Tommy | Shopify Developer & Full-Stack Engineer",
+    description:
+      "Building custom Shopify stores, full-stack web apps, and bold visual design.",
+    url: "https://tommyvong.com/", // replace with your domain
+    siteName: "Tommy Portfolio",
+    images: [
+      {
+        url: "/images/tv.png", // can use same tv.png or a larger og-image.png
+        width: 1200,
+        height: 630,
+        alt: "Tommy Portfolio Preview",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  icons: {
+    icon: "/images/tv.png", // favicon
+    shortcut: "/images/tv.png",
+    apple: "/images/tv.png",
+  },
+};
+
 export default function RootLayout({
   children,
 }: {

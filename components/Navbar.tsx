@@ -363,6 +363,60 @@ const Navbar = () => {
       </motion.header>
 
       {/* Mobile Slide-in Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.button
+              onClick={() => setMobileMenuOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-black/70 md:hidden"
+              aria-label="Close menu"
+            />
+
+            {/* Drawer */}
+            <motion.aside
+              role="dialog"
+              aria-modal="true"
+              initial={{ x: 320 }} // match the panel width below
+              animate={{ x: 0 }}
+              exit={{ x: 320 }}
+              transition={{ type: "tween", duration: 0.25 }}
+              className="fixed right-0 top-0 z-50 h-full w-[320px] bg-white dark:bg-zinc-900 shadow-xl md:hidden"
+            >
+              <div className="flex items-center justify-between p-4">
+                {/* <span className="font-semibold text-lg">Menu</span> */}
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-zinc-800 dark:text-gray-200 text-2xl ml-auto"
+                  aria-label="Close"
+                >
+                  <IoClose />
+                </button>
+              </div>
+
+              <nav className="p-6">
+                <ul className="flex flex-col gap-6 text-lg">
+                  {navItems.map(({ label, path }) => (
+                    <li key={label}>
+                      <Link
+                        href={path}
+                        onClick={(e) => handleClick(e, path, label)}
+                        className="block text-zinc-800 dark:text-gray-200 hover:text-blue-500"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };
